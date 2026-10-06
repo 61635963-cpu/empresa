@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mint Corner | Streetwear & Kicks 🧨</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0c0c0c; color: #f3f4f6; line-height: 1.6; }
+        
+        header { background: linear-gradient(180deg, #18181b 0%, #0c0c0c 100%); border-bottom: 3px solid #8b5cf6; padding: 35px 20px; text-align: center; }
+        .brand-title { font-family: 'Impact', 'Arial Black', sans-serif; font-size: 3.5rem; color: #ffffff; text-shadow: 0 0 15px #8b5cf6, 0 0 25px #f59e0b; letter-spacing: 3px; text-transform: uppercase; }
+        .tagline { color: #f59e0b; font-weight: bold; letter-spacing: 2px; font-size: 0.95rem; margin-top: 5px; }
+        .sub-location { color: #a1a1aa; font-size: 0.9rem; margin-top: 4px; }
+        
+        nav { background: #111113; display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; padding: 12px; border-bottom: 1px solid #27272a; position: sticky; top: 0; z-index: 90; }
+        nav a { color: #f59e0b; text-decoration: none; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; padding: 6px 12px; transition: all 0.3s ease; border-radius: 4px; }
+        nav a:hover { color: #ffffff; background: #8b5cf6; box-shadow: 0 0 10px rgba(139, 92, 246, 0.5); }
+        
+        .hero { background: radial-gradient(circle, rgba(139,92,246,0.2) 0%, rgba(12,12,12,1) 85%); text-align: center; padding: 50px 20px; border-bottom: 2px dashed #3f3f46; }
+        .hero h2 { font-family: 'Impact', sans-serif; font-size: 2.2rem; color: #f59e0b; letter-spacing: 1px; margin-bottom: 10px; }
+        .hero p { color: #d4d4d8; max-width: 650px; margin: 0 auto; font-size: 1.05rem; }
+        
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        .section { background: #18181b; border: 1px solid #27272a; border-left: 5px solid #8b5cf6; padding: 25px; margin-bottom: 30px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
+        .section h2 { font-family: 'Impact', sans-serif; color: #ffffff; font-size: 1.7rem; letter-spacing: 1px; border-bottom: 2px solid #f59e0b; padding-bottom: 6px; margin-bottom: 18px; text-transform: uppercase; }
+        
+        /* Barra de búsqueda y filtros */
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 15px; justify-content: space-between; align-items: center; margin-bottom: 25px; background: #09090b; padding: 15px; border-radius: 8px; border: 1px solid #27272a; }
+        .search-input { flex-grow: 1; min-width: 220px; background: #18181b; border: 1px solid #3f3f46; color: #fff; padding: 10px 15px; border-radius: 6px; font-size: 0.9rem; outline: none; }
+        .search-input:focus { border-color: #8b5cf6; box-shadow: 0 0 8px rgba(139, 92, 246, 0.4); }
+        .filter-btn-group { display: flex; gap: 8px; }
+        .filter-btn { background: #18181b; color: #a1a1aa; border: 1px solid #3f3f46; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.85rem; transition: 0.3s; }
+        .filter-btn.active, .filter-btn:hover { background: #8b5cf6; color: #fff; border-color: #8b5cf6; }
+
+        /* Grid de productos */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 15px; }
+        .card { background: #09090b; border: 1px solid #3f3f46; padding: 15px; border-radius: 8px; transition: transform 0.3s, border-color 0.3s; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
+        .card:hover { transform: translateY(-5px); border-color: #8b5cf6; }
+        .card img { width: 100%; height: 320px; object-fit: cover; border-radius: 6px; margin-bottom: 12px; border: 1px solid #27272a; }
+        .card h3 { color: #f59e0b; font-size: 1.1rem; margin-bottom: 6px; text-align: left; }
+        .card p { font-size: 0.85rem; color: #a1a1aa; text-align: left; flex-grow: 1; }
+        
+        .size-selector { margin-top: 10px; text-align: left; }
+        .size-selector label { font-size: 0.75rem; color: #a1a1aa; text-transform: uppercase; font-weight: bold; }
+        .size-selector select { width: 100%; padding: 6px; background: #18181b; color: #ffffff; border: 1px solid #3f3f46; border-radius: 4px; margin-top: 4px; font-size: 0.85rem; }
+
+        .card .price { display: block; background: #8b5cf6; color: #ffffff; font-weight: bold; padding: 8px; border-radius: 4px; font-size: 0.95rem; margin-top: 12px; text-align: center; }
+        .btn-add-cart { display: inline-block; width: 100%; background: #f59e0b; color: #000; font-weight: bold; border: none; padding: 10px; border-radius: 4px; margin-top: 8px; text-transform: uppercase; font-size: 0.85rem; cursor: pointer; transition: background 0.3s; }
+        .btn-add-cart:hover { background: #d97706; color: #fff; }
+
+        /* Guía de tallas */
+        .size-table { width: 100%; border-collapse: collapse; margin-top: 15px; text-align: left; font-size: 0.9rem; }
+        .size-table th, .size-table td { border: 1px solid #3f3f46; padding: 10px; }
+        .size-table th { background: #09090b; color: #f59e0b; }
+        .size-table tr:nth-child(even) { background: #111113; }
+
+        /* Botones Flotantes */
+        .wsp-float { position: fixed; width: 55px; height: 55px; bottom: 25px; right: 25px; background-color: #25d366; color: #fff; border-radius: 50px; text-align: center; font-size: 28px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); z-index: 1000; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s; }
+        .wsp-float:hover { transform: scale(1.1); background-color: #1eb857; }
+
+        .cart-float { position: fixed; width: 55px; height: 55px; bottom: 90px; right: 25px; background-color: #8b5cf6; color: #fff; border-radius: 50px; text-align: center; font-size: 24px; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; transition: 0.3s; }
+        .cart-float:hover { transform: scale(1.1); background-color: #7c3aed; }
+        .cart-badge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: #fff; font-size: 0.75rem; font-weight: bold; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #0c0c0c; }
+
+        /* Offcanvas / Panel Lateral del Carrito */
+        .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1100; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .cart-overlay.active { opacity: 1; pointer-events: all; }
+        .cart-drawer { position: fixed; top: 0; right: -400px; width: 100%; max-width: 380px; height: 100%; background: #111113; border-left: 2px solid #8b5cf6; z-index: 1200; transition: 0.3s; display: flex; flex-direction: column; padding: 20px; box-shadow: -5px 0 25px rgba(0,0,0,0.8); }
+        .cart-drawer.active { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #27272a; padding-bottom: 15px; }
+        .cart-header h3 { font-family: 'Impact', sans-serif; font-size: 1.5rem; color: #f59e0b; }
+        .cart-close { background: none; border: none; color: #a1a1aa; font-size: 1.5rem; cursor: pointer; }
+        .cart-items { flex-grow: 1; overflow-y: auto; margin: 15px 0; display: flex; flex-direction: column; gap: 12px; }
+        .cart-item { background: #18181b; border: 1px solid #27272a; padding: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+        .cart-item-info h4 { font-size: 0.9rem; color: #fff; }
+        .cart-item-info p { font-size: 0.8rem; color: #a1a1aa; }
+        .cart-item-actions { display: flex; align-items: center; gap: 8px; }
+        .cart-item-btn { background: #27272a; color: #fff; border: none; width: 24px; height: 24px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .cart-footer { border-top: 1px solid #27272a; padding-top: 15px; }
+        .cart-total { display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; color: #fff; }
+        .btn-checkout-wsp { display: block; width: 100%; background: #25d366; color: #000; text-align: center; font-weight: bold; padding: 12px; border-radius: 6px; text-decoration: none; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; border: none; cursor: pointer; }
+        .btn-checkout-wsp:hover { background: #1eb857; }
+
+        ul { list-style: none; padding-left: 0; }
+        ul li { position: relative; padding-left: 25px; margin-bottom: 10px; }
+        ul li::before { content: "🔥"; position: absolute; left: 0; top: 0; }
+        
+        footer { background: #000000; border-top: 2px solid #8b5cf6; color: #71717a; text-align: center; padding: 25px 20px; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-title">MINT CORNER</div>
+        <div class="tagline">SINCE 2024 | VENTA DE ROPA URBANA</div>
+        <div class="sub-location">📍 Jr. Carhuaz 1192 - Breña, Lima, Perú</div>
+    </header>
+
+    <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="#catalogo">Catálogo 🛒</a>
+        <a href="#tallas">Guía de Tallas 📐</a>
+        <a href="#nosotros">Misión & Visión</a>
+        <a href="#historia">Historia</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+
+    <div class="hero" id="inicio">
+        <h2>STREETWEAR INDEPENDIENTE NM🧨</h2>
+        <p>Prendas y calzado urbano exclusivo diseñado con actitud underground. Moda de calle auténtica para quienes marcan su propio ritmo.</p>
+    </div>
+
+    <div class="container">
+
+        <!-- CATÁLOGO UNIFICADO CON BUSCADOR Y FILTROS -->
+        <div class="section" id="catalogo">
+            <h2>Catálogo Oficial streetwear 🛹👟</h2>
+            
+            <div class="filter-bar">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar por nombre o modelo (ej. Vans, Cargo, NB)..." onkeyup="filterProducts()">
+                <div class="filter-btn-group">
+                    <button class="filter-btn active" onclick="filterCategory('all', this)">Todos</button>
+                    <button class="filter-btn" onclick="filterCategory('baggy', this)">Baggies 👖</button>
+                    <button class="filter-btn" onclick="filterCategory('sneakers', this)">Kicks 👟</button>
+                </div>
+            </div>
+
+            <div class="grid" id="productGrid">
+                
+                <!-- BAGGIES (5 modelos) -->
+                <div class="card product-item" data-category="baggy" data-title="baggy black classic">
+                    <div>
+                        <img src="img/baggy1.jpg" alt="Baggy Black Classic">
+                        <h3>Baggy Black Classic</h3>
+                        <p>Pantalón ancho en negro mate con elástico cómodo y caída suelta ideal para combinar con cualquier polo u hoodie.</p>
+                        <div class="size-selector">
+                            <label>Talla:</label>
+                            <select id="size-b1">
+                                <option value="S (28-30)">S (28 - 30)</option>
+                                <option value="M (30-32)">M (30 - 32)</option>
+                                <option value="L (32-34)">L (32 - 34)</option>
+                                <option value="XL (34-36)">XL (34 - 36)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="price">S/ 85.00</span>
+                        <button class="btn-add-cart" onclick="addToCart('Baggy Black Classic', 85, 'size-b1')">Agregar al Carrito 🛒</button>
+                    </div>
+                </div>
+
+                <div class="card product-item" data-category="baggy" data-title="baggy heavy black">
+                    <div>
+                        <img src="img/baggy2.jpg" alt="Baggy Heavy Black">
+                        <h3>Baggy Heavy Black</h3>
+                        <p>Corte extra ancho de tiro bajo, estilo baggy noventero con ajuste regular en tobillo.</p>
+                        <div class="size-selector">
+                            <label>Talla:</label>
+                            <select id="size-b2">
+                                <option value="S (28-30)">S (28 - 30)</option>
+                                <option value="M (30-32)">M (30 - 32)</option>
+                                <option value="L (32-34)">L (32 - 34)</option>
+                                <option value="XL (34-36)">XL (34 - 36)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="price">S/ 85.00</span>
+                        <button class="btn-add-cart" onclick="addToCart('Baggy Heavy Black', 85, 'size-b2')">Agregar al Carrito 🛒</button>
+                    </div>
+                </div>
+
+                <div class="card product-item" data-category="baggy" data-title="baggy track navy red">
+                    <div>
+                        <img src="img/baggy3.jpg" alt="Baggy Track Navy & Red">
+                        <h3>Baggy Track Navy & Red</h3>
+                        <p>Pantalón deportivo oversized azul marino con franja lateral roja. Tela ligera de alto rendimiento.</p>
+                        <div class="size-selector">
+                            <label>Talla:</label>
+                            <select id="size-b3">
+                                <option value="S (28-30)">S (28 - 30)</option>
+                                <option value="M (30-32)">M (30 - 32)</option>
+                                <option value="L (32-34)">L (32 - 34)</option>
+                                <option value="XL (34-36)">XL (34 - 36)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="price">S/ 90.00</span>
+                        <button class="btn-add-cart" onclick="addToCart('Baggy Track Navy & Red', 90, 'size-b3')">Agregar al Carrito 🛒</button>
+                    </div>
+                </div>
+
+                <div class="card product-item" data-category="baggy" data-title="baggy cargo olive green">
+                    <div>
+                        <img src="img/baggy4.jpg" alt="Baggy Cargo Olive Green">
+                        <h3>Baggy Cargo Olive Green</h3>
+                        <p>Pantalón estilo cargo militar en verde olivo con bolsillos laterales gigantes y volumen amplio.</p>
+                        <div class="size-selector">
+                            <label>Talla:</label>
+                            <select id="size-b4">
+                                <option value="S (28-30)">S (28 - 30)</option>
+                                <option value="M (30-32)">M (30 - 32)</option>
+                                <option value="L (32-34)">L (32 - 34)</option>
+                                <option value="XL (34-36)">XL (34 - 36)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="price">S/ 95.00</span>
+                        <button class="btn-add-cart" onclick="addToCart('Baggy Cargo Olive Green', 95, 'size-b4')">Agregar al Carrito 🛒</button>
+                    </div>
+                </div>
+
+                <div class="card product-item" data-category="baggy" data-title="baggy track cyan line">
+                    <div>
+                        <img src="img/baggy5.jpg" alt="Baggy Track Cyan Line">
+                        <h3>Baggy Track Cyan Line</h3>
+                        <p>Estilo deportivo holgado en tono oscuro con franjas celestes laterales para destacar en la calle.</p>
+                        <div class="size-selector">
+                            <label>Talla:</label>
+                            <select id="size-b5">
+                                <option value="S (28-30)">S (28 - 30)</option>
+                                <option value="M (30-32)">M (30 - 32)</option>
+                                <option value="L (32-34)">L (32 - 34)</option>
+                                <option value="XL (34-36)">XL (34 - 36)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="price">S/ 90.00</span>
+                        <button class="btn-add-cart" onclick="addToCart('Baggy Track Cyan Line', 90, 'size-b5')">Agregar al Carrito 🛒</button>
+                    </div>
+                </div>
+
+                <!-- SNEAKERS (7 modelos) -->
+                <div class="card product-item" data-category="sneakers" data-title="new balance 530 silver metallic">
+                    <div>
+                        <img src="img/sneaker1.jpg" alt="New Balance 530 Silver">
+                        <h3>New Balance 530 Silver Metallic</h3>
+                        <p>Estilo retro runner noventero con paneles sintéticos plateados, malla transpirable y suela ABZORB.</p>
+                        <div class="size-selector">
+                            <label>Talla (EUR):</label>
+                            <select id="size-s1">
+                                <option value="39 EUR (38.5 PER)">39 (38.5 PER)</option>
+                                <option value="40 EUR (39 PER)">40 (39 PER)</option>
+                                <option value="41 EUR (40 PER)">41 (40 PER)</option>
+                                <option value="42 EUR (41 PER)">42 (41 PER)</option>
+                                <option value="43 EUR (42 PER)">43 (42 PER)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="price">S/ 260.00</span>
+                        <button class="btn-add-cart" onclick="addToCart('New Balance 530 Silver', 260, 'size-s1')">Agregar al Carrito 🛒</button>
+                    </div>
+                </div>
+
+                <div class="card product-item" data-category="sneakers" data-title="puma suede xl black white">
+                    <div>
+                        <img src="img/sneaker2.jpg" alt="Puma Suede XL">
+                        <h3>Puma Suede XL Black & White</h3>
+                        <p>Silueta XL acolchada con lengüeta gruesa, pasadores anchos y franja lateral clásica blanca.</p>
+                        <div class="size-selector">
+                            <label>Talla (EUR):</label>
+                            <select id="size-s2">
+                                <option value="39 EUR (38.5 PER)">39 (38.5 PER)</option>
+                                <option value="40 EUR (39 PER)">40 (39 PER)</option>
+                                <option value="41 EUR (40 PER)">41 (40 PER)</option>
+                                <option value="42 EUR (41 PER)">42 (41 PER)</option>
+                                <option value="43 EUR (42 PER)">43 (42 PER)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="price">S/ 230.00</span>
+                        <button class="btn-add-cart" onclick="addToCart('Puma Suede XL', 230, 'size-s2')">Agregar al Carrito 🛒</button>
+                    </div>
+                </div>
+
+                <div class="card product-item" data-category="sneakers" data-title="adidas campus 00s black gum">
+                    <div>
+                        <img src="img/sneaker3.jpg" alt="Adidas Campus 00s Black">
+                        <h3>Adidas Campus 00s Black / Gum</h3>
+                        <p>Gamuza negra pesada, pasadores anchos afelpados y suela de liga estilo skate de los 2000s.</p>
+                        <div class="size-selector">
+                            <label>Talla (EUR):</label>
+                            <select id="size-s3">
+                                <option value="39 EUR (38.5 PER)">39 (38.5 PER)</option>
+                                <option value="40 EUR (39 PER)">40 (39 PER)</option>
+                                <option value="41 EUR (40 PER)">41 (40 PER)</option>
+                                <option value="42 EUR (41 PER)">42 (41 PER)</option>
+                                <option value="43 EUR (42 PER)">43 (42 PER)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="price">S/ 240.00</span>
+                        <button class="btn-add-cart" onclick="addToCart('Adidas Campus 00s Black', 240, 'size-s3')">Agregar al Carrito 🛒</button>
+                    </div>
+                </div>
+
+                <div class="card product-item" data-category="sneakers" data-title="vans knu skool black white">
+                    <div>
+                        <img src="img/sneaker4.jpg" alt="Vans Knu Skool">
+                        <h3>Vans Knu Skool Black / White</h3>
+                        <p>Diseño 90s abombado, franja Sidestripe en relieve 3D y tira para calzar fácil en el talón.</p>
+                        <div class="size-selector">
+                            <label>Talla (EUR):</label>
+                            <select id="size-s4">
+                                <option value="39 EUR (38.5 PER)">39 (38.5 PER)</option>
+                                <option value="40 EUR (39 PER)">40 (39 PER)</option>
+                                <option value="41 EUR (40 PER)">41 (40 PER)</option>
+                                <option value="42 EUR (41 PER)">42 (41 PER)</option>
+                                <option value="43 EUR (42 PER)">43 (42 PER)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="price">S/ 250.00</span>
+                        <button class="btn-add-cart" onclick="addToCart('Vans Knu Skool', 250, 'size-s4')">Agregar al Carrito 🛒</button>
+                    </div>
+                </div>
+
+                <div class="card product-item" data-category="sneakers" data-title="adidas superstar xl classic">
+                    <div>
+                        <img src="img/sneaker5.jpg" alt="Adidas Superstar White Classic">
+                        <h3>Adidas Superstar XL Classic</h3>
+                        <p>Icónico diseño blanco con 3 tiras negras, acolchado interior extra y corte streetwear ancho.</p>
+                        <div class="size-selector">
+                            <label>Talla (EUR):</label>
+                            <select id="size-s5">
+                                <option value="39 EUR (38.5 PER)">39 (38.5 PER)</option>
+                                <option value="40 EUR (39 PER)">40 (39 PER)</option>
+                                <option value="41 EUR (40 PER)">41 (40 PER)</option>
+                                <option value="42 EUR (41 PER)">42 (41 PER)</option>
+                                <option value="43 EUR (42 PER)">43 (42 PER)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="price">S/ 235.00</span>
+                        <button class="btn-add-cart" onclick="addToCart('Adidas Superstar XL Classic', 235, 'size-s5')">Agregar al Carrito 🛒</button>
+                    </div>
+                </div>
+
+                <div class="card product-item" data-category="sneakers" data-title="vans chunky white grey">
+                    <div>
+                        <img src="img/sneaker6.jpg" alt="Vans Chunky White">
+                        <h3>Vans Chunky White & Grey</h3>
+                        <p>Diseño robótico / futurista en cuero blanco con detalles en contraste gris y agujetas gruesas.</p>
+                        <div class="size-selector">
+                            <label>Talla (EUR):</label>
+                            <select id="size-s6">
+                                <option value="39 EUR (38.5 PER)">39 (38.5 PER)</option>
+                                <option value="40 EUR (39 PER)">40 (39 PER)</option>
+                                <option value="41 EUR (40 PER)">41 (40 PER)</option>
+                                <option value="42 EUR (41 PER)">42 (41 PER)</option>
+                                <option value="43 EUR (42 PER)">43 (42 PER)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="price">S/ 250.00</span>
+                        <button class="btn-add-cart" onclick="addToCart('Vans Chunky White', 250, 'size-s6')">Agregar al Carrito 🛒</button>
+                    </div>
+                </div>
+
+                <div class="card product-item" data-category="sneakers" data-title="adidas superstar xl dark sole">
+                    <div>
+                        <img src="img/sneaker7.jpg" alt="Adidas Superstar Black Sole">
+                        <h3>Adidas Superstar XL Dark Sole</h3>
+                        <p>Puntera de concha clásica con contraste de suela negra gruesa y pasadores estilo fat-laces.</p>
+                        <div class="size-selector">
+                            <label>Talla (EUR):</label>
+                            <select id="size-s7">
+                                <option value="39 EUR (38.5 PER)">39 (38.5 PER)</option>
+                                <option value="40 EUR (39 PER)">40 (39 PER)</option>
+                                <option value="41 EUR (40 PER)">41 (40 PER)</option>
+                                <option value="42 EUR (41 PER)">42 (41 PER)</option>
+                                <option value="43 EUR (42 PER)">43 (42 PER)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="price">S/ 235.00</span>
+                        <button class="btn-add-cart" onclick="addToCart('Adidas Superstar Dark Sole', 235, 'size-s7')">Agregar al Carrito 🛒</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- GUÍA DE TALLAS -->
+        <div class="section" id="tallas">
+            <h2>Guía de Tallas & Calce 📐</h2>
+            <p style="color: #a1a1aa; margin-bottom: 10px;">Consulta nuestras medidas para asegurar el calce exacto antes de realizar tu pedido.</p>
+            
+            <h3 style="color: #f59e0b; font-size: 1.1rem; margin-top: 15px;">👖 Baggies (Pantalones)</h3>
+            <table class="size-table">
+                <thead>
+                    <tr><th>Talla</th><th>Equivalencia Jean</th><th>Cintura (cm)</th><th>Largo (cm)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>S</td><td>28 - 30</td><td>72 - 78 cm</td><td>102 cm</td></tr>
+                    <tr><td>M</td><td>30 - 32</td><td>78 - 84 cm</td><td>104 cm</td></tr>
+                    <tr><td>L</td><td>32 - 34</td><td>84 - 90 cm</td><td>106 cm</td></tr>
+                    <tr><td>XL</td><td>34 - 36</td><td>90 - 96 cm</td><td>108 cm</td></tr>
+                </tbody>
+            </table>
+
+            <h3 style="color: #f59e0b; font-size: 1.1rem; margin-top: 25px;">👟 Sneakers (Zapatillas)</h3>
+            <table class="size-table">
+                <thead>
+                    <tr><th>Talla EUR</th><th>Equivalencia Perú / US</th><th>Medida Plantilla (cm)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>39 EUR</td><td>38.5 PER / 7 US</td><td>25.0 cm</td></tr>
+                    <tr><td>40 EUR</td><td>39.0 PER / 7.5 US</td><td>25.5 cm</td></tr>
+                    <tr><td>41 EUR</td><td>40.0 PER / 8.5 US</td><td>26.5 cm</td></tr>
+                    <tr><td>42 EUR</td><td>41.0 PER / 9.0 US</td><td>27.0 cm</td></tr>
+                    <tr><td>43 EUR</td><td>42.0 PER / 10.0 US</td><td>28.0 cm</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- MISIÓN Y VISIÓN -->
+        <div class="section" id="nosotros">
+            <h2>Misión & Visión Urbana</h2>
+            <p><strong>Misión:</strong> Representar el verdadero underground limeño vistiendo a la calle con actitud, drops exclusivos y ropa urbana de corte pesado que rompe la monotonía y celebra el arte urbano, el hip-hop y la cultura callejera.</p>
+            <br>
+            <p><strong>Visión:</strong> Dominar la escena streetwear independiente del Perú para el 2028, marcando el estándar de la moda urbana con identidad propia, flow auténtico y presencia en cada rincón de la ciudad.</p>
+            <br>
+            <p style="margin-bottom: 8px;"><strong>Valores Principales:</strong></p>
+            <ul>
+                <li>Cultura e Identidad de Calle</li>
+                <li>Autenticidad y Flow Exclusivo</li>
+                <li>Calidad en Telas e Impresiones</li>
+                <li>Lealtad a la Comunidad Underground</li>
+            </ul>
+        </div>
+
+        <!-- HISTORIA -->
+        <div class="section" id="historia">
+            <h2>Historia & Logros</h2>
+            <p>Fundada en el 2024 en el corazón de Breña, Mint Corner nace de la necesidad de vestir sin etiquetas genéricas. Desde la esquina del barrio proyectamos ropa creada por y para amantes de la cultura urbana.</p>
+            <br>
+            <p style="margin-bottom: 8px;"><strong>Hitos Destacados:</strong></p>
+            <ul>
+                <li>Apertura del punto de venta en Jr. Carhuaz 1192 - Breña</li>
+                <li>Lanzamiento de la colección inaugural "Since 2024"</li>
+                <li>Comunidad activa de streetwear en Lima</li>
+            </ul>
+        </div>
+
+        <!-- UBICACIÓN Y CONTACTO -->
+        <div class="section" id="contacto">
+            <h2>Ubicación & Contacto</h2>
+            <div>
+                <p>🏬 <strong>Tienda Física:</strong> Jr. Carhuaz 1192 - Breña, Lima, Perú</p>
+                <p>📲 <strong>WhatsApp / Celular:</strong> +51 981 857 385</p>
+                <p>✉️ <strong>Correo Electrónico:</strong> contacto@mintcorner.com</p>
+                <p>🌐 <strong>Redes Sociales:</strong> Instagram (@mintcorner) | TikTok (@mintcorner.pe) | Facebook</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BOTONES FLOTANTES -->
+    <button class="cart-float" onclick="toggleCart()" title="Ver Carrito">
+        🛒
+        <span class="cart-badge" id="cartCount">0</span>
+    </button>
+
+    <a href="https://wa.me/51981857385?text=Hola%20Mint%20Corner,%20quiero%20hacer%20una%20consulta" class="wsp-float" target="_blank" title="Escríbenos a WhatsApp">
+        💬
+    </a>
+
+    <!-- CARRITO LATERAL (DRAWER) -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>Tu Carrito 🛍️</h3>
+            <button class="cart-close" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItemsContainer">
+            <p style="color: #a1a1aa; font-size: 0.9rem; text-align: center; margin-top: 30px;">Tu carrito está vacío 🛹</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotalAmount">S/ 0.00</span>
+            </div>
+            <button class="btn-checkout-wsp" onclick="sendOrderWhatsApp()">Pedir por WhatsApp 🚀</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Mint Corner - Todos los derechos reservados.</p>
+        <p>Jr. Carhuaz 1192, Breña • Lima, Perú</p>
+    </footer>
+
+    <!-- JAVASCRIPT DINÁMICO -->
+    <script>
+        let cart = [];
+        let currentCategory = 'all';
+
+        // Lógica de Búsqueda y Filtro
+        function filterProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const products = document.querySelectorAll('.product-item');
+
+            products.forEach(product => {
+                const title = product.getAttribute('data-title');
+                const category = product.getAttribute('data-category');
+                
+                const matchesSearch = title.includes(query);
+                const matchesCategory = (currentCategory === 'all' || category === currentCategory);
+
+                if (matchesSearch && matchesCategory) {
+                    product.style.display = 'flex';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+
+        function filterCategory(cat, btn) {
+            currentCategory = cat;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filterProducts();
+        }
+
+        // Lógica del Carrito
+        function toggleCart() {
+            document.getElementById('cartOverlay').classList.toggle('active');
+            document.getElementById('cartDrawer').classList.toggle('active');
+        }
+
+        function addToCart(name, price, selectId) {
+            const sizeSelect = document.getElementById(selectId);
+            const selectedSize = sizeSelect.value;
+            const itemKey = name + '-' + selectedSize;
+
+            const existingIndex = cart.findIndex(item => item.key === itemKey);
+
+            if (existingIndex > -1) {
+                cart[existingIndex].qty += 1;
+            } else {
+                cart.push({ key: itemKey, name: name, price: price, size: selectedSize, qty: 1 });
+            }
+
+            updateCartUI();
+            toggleCart();
+        }
+
+        function changeQty(key, delta) {
+            const index = cart.findIndex(item => item.key === key);
+            if (index > -1) {
+                cart[index].qty += delta;
+                if (cart[index].qty <= 0) {
+                    cart.splice(index, 1);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const totalEl = document.getElementById('cartTotalAmount');
+            const countEl = document.getElementById('cartCount');
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="color: #a1a1aa; font-size: 0.9rem; text-align: center; margin-top: 30px;">Tu carrito está vacío 🛹</p>';
+                totalEl.innerText = 'S/ 0.00';
+                countEl.innerText = '0';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+            let totalQty = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.qty;
+                total += itemTotal;
+                totalQty += item.qty;
+
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <p>Talla: ${item.size} | S/ ${item.price.toFixed(2)}</p>
+                        </div>
+                        <div class="cart-item-actions">
+                            <button class="cart-item-btn" onclick="changeQty('${item.key}', -1)">-</button>
+                            <span style="font-size: 0.9rem; font-weight: bold; color: #fff;">${item.qty}</span>
+                            <button class="cart-item-btn" onclick="changeQty('${item.key}', 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            totalEl.innerText = `S/ ${total.toFixed(2)}`;
+            countEl.innerText = totalQty;
+        }
+
+        function sendOrderWhatsApp() {
+            if (cart.length === 0) {
+                alert('¡Tu carrito está vacío! Agrega algunas prendas primero.');
+                return;
+            }
+
+            let msg = 'Hola Mint Corner, quiero realizar el siguiente pedido desde la web:\n\n';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const subtotal = item.price * item.qty;
+                total += subtotal;
+                msg += `${index + 1}. *${item.name}*\n   - Talla: ${item.size}\n   - Cantidad: ${item.qty}\n   - Subtotal: S/ ${subtotal.toFixed(2)}\n\n`;
+            });
+
+            msg += `*TOTAL A PAGAR: S/ ${total.toFixed(2)}*\n\n¿Me confirman disponibilidad y método de pago (Yape/Plin/Transferencia)?`;
+
+            const phone = "51981857385";
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+
+</body>
+</html>
